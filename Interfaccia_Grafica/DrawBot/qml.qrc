@@ -1,0 +1,20 @@
+<RCC>
+    <qresource prefix="/">
+        <file>main.qml</file>
+        <file>Immagini/Cerchio.png</file>
+        <file>Immagini/Esci.png</file>
+        <file>Immagini/Gomma.png</file>
+        <file>Immagini/Pausa.png</file>
+        <file>Immagini/Penna.png</file>
+        <file>Immagini/Pulisci.png</file>
+        <file>Immagini/Quadrato.png</file>
+        <file>Immagini/Rettangolo.png</file>
+        <file>Immagini/Salva.png</file>
+        <file>Immagini/Secchiello.png</file>
+        <file>Immagini/Segmento.png</file>
+        <file>Immagini/Stampa.png</file>
+        <file>Immagini/Triangolo.png</file>
+        <file>Immagini/Debug.png</file>
+        <file>Immagini/Homing.png</file>
+    </qresource>
+</RCC>
