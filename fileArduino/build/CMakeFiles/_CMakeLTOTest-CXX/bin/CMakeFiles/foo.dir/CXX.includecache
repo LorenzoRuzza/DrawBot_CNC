@@ -1,0 +1,10 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/home/the_lorlito/Documenti/DrawBot_CNC/fileArduino/build/CMakeFiles/_CMakeLTOTest-CXX/src/foo.cpp
+

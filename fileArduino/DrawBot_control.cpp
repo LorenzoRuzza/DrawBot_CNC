@@ -1,6 +1,4 @@
 #include "DRAWBOTLIB.h"  
-#include "Arduino.h"
-
 
 #ifdef FULLSTEP
 #define SPOSTAMENTO_PASSO  0.01 // se faccio 2mm a giro e servono 200 passi per fare un giro, faccio 0,01mm a passo (2/200)

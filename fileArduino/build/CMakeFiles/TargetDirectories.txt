@@ -1,0 +1,13 @@
+/home/the_lorlito/Documenti/DrawBot_CNC/fileArduino/build/CMakeFiles/rebuild_cache.dir
+/home/the_lorlito/Documenti/DrawBot_CNC/fileArduino/build/CMakeFiles/DrawBot.dir
+/home/the_lorlito/Documenti/DrawBot_CNC/fileArduino/build/CMakeFiles/edit_cache.dir
+/home/the_lorlito/Documenti/DrawBot_CNC/fileArduino/build/CMakeFiles/upload-DrawBot.dir
+/home/the_lorlito/Documenti/DrawBot_CNC/fileArduino/build/CMakeFiles/ArduinoCore.dir
+/home/the_lorlito/Documenti/DrawBot_CNC/fileArduino/build/lib/CMakeFiles/rebuild_cache.dir
+/home/the_lorlito/Documenti/DrawBot_CNC/fileArduino/build/lib/CMakeFiles/edit_cache.dir
+/home/the_lorlito/Documenti/DrawBot_CNC/fileArduino/build/lib/Servo/CMakeFiles/rebuild_cache.dir
+/home/the_lorlito/Documenti/DrawBot_CNC/fileArduino/build/lib/Servo/CMakeFiles/Servo.dir
+/home/the_lorlito/Documenti/DrawBot_CNC/fileArduino/build/lib/Servo/CMakeFiles/edit_cache.dir
+/home/the_lorlito/Documenti/DrawBot_CNC/fileArduino/build/lib/DRAWBOTLIB/CMakeFiles/rebuild_cache.dir
+/home/the_lorlito/Documenti/DrawBot_CNC/fileArduino/build/lib/DRAWBOTLIB/CMakeFiles/DRAWBOTLIB.dir
+/home/the_lorlito/Documenti/DrawBot_CNC/fileArduino/build/lib/DRAWBOTLIB/CMakeFiles/edit_cache.dir

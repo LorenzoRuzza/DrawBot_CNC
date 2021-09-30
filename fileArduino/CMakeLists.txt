@@ -14,4 +14,15 @@ arduino_avr_upload(DrawBot ${ARDUINO_PORT})
 
 add_subdirectory( lib )
 
-add_subdirectory( app )
+
+
+add_executable( DrawBot DrawBot_control.cpp)
+target_compile_options(DrawBot PUBLIC
+    "-Wall"
+    "-Wextra"
+    "-pedantic"
+)
+arduino_avr_hex(DrawBot)
+target_link_libraries( DrawBot PUBLIC ArduinoCore ) 
+target_link_libraries( DrawBot PUBLIC LORLO::DRAWBOTLIB )
+target_link_libraries( DrawBot PUBLIC LORLO::Servo )
