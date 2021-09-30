@@ -1,3 +1,0 @@
-motore   				KEYWORD2
-muovi_linea_retta    	KEYWORD1
-inizializza_motore		KEYWORD1

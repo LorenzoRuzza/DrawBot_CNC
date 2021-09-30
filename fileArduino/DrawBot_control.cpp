@@ -60,7 +60,12 @@ bool stato_motori = 0; //spenti
 void setup(){
   
   Serial.begin(115200);
+  #ifdef IMMAGINE
+  DrawBot.inizializza_motore(X, SPOSTAMENTO_PASSO, pMotore_X_step, pMotore_X_dir, pMotore_X_en);
+  #endif
+  #ifndef IMMAGINE
   DrawBot.inizializza_motore(X, -SPOSTAMENTO_PASSO, pMotore_X_step, pMotore_X_dir, pMotore_X_en);
+  #endif
   DrawBot.inizializza_motore(Y, SPOSTAMENTO_PASSO, pMotore_Y_step, pMotore_Y_dir, pMotore_Y_en);
   DrawBot.inizializza_motore(Motore_Z);
 

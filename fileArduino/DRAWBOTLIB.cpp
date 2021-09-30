@@ -1,7 +1,7 @@
 #include "DRAWBOTLIB.h"
 
 //#include "Arduino.h"
-
+#define IMMAGINE
 
 Motore_stepper motore_asse[MAX_MOTORI_STEPPER];
 Finecorsa finecorsa_asse[MAX_MOTORI_STEPPER];
@@ -613,11 +613,12 @@ void CNC::muovi_CNC()
   }
     
    if ((set_tipo_movimento_ == RETTA || set_tipo_movimento_ == RAPIDO) && (passi_X_ != 0 || passi_Y_ != 0)){
-
+#ifndef IMMAGINE
     if (set_tipo_movimento_ == RETTA)
       abbassa_penna();
     else 
       solleva_penna();
+#endif
     
     if(cambia_X_ == 1 && cambia_Y_ == 0)
       muovi_linea_retta(X, passi_X_);
@@ -665,7 +666,7 @@ void CNC::muovi_CNC()
 
     
     if (set_M_ == PAUSA) {
-        delay(1000);
+        delay(500);
         set_M_ = START;
     }
 
@@ -684,7 +685,7 @@ void CNC::muovi_CNC()
       Serial.println(coordinata_attuale_X_);
       Serial.print("coordinata_attuale_Y_ ");
       Serial.println(coordinata_attuale_Y_);
-            Serial.print("coordinata_attuale_Z_ ");
+      Serial.print("coordinata_attuale_Z_ ");
       Serial.println(coordinata_attuale_Z_);
 
       Serial.print("coordinata_precedente_X_ ");
