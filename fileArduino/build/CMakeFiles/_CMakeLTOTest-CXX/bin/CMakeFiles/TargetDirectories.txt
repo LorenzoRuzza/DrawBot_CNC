@@ -1,0 +1,4 @@
+/home/the_lorlito/Documenti/DrawBot_CNC/fileArduino/build/CMakeFiles/_CMakeLTOTest-CXX/bin/CMakeFiles/rebuild_cache.dir
+/home/the_lorlito/Documenti/DrawBot_CNC/fileArduino/build/CMakeFiles/_CMakeLTOTest-CXX/bin/CMakeFiles/edit_cache.dir
+/home/the_lorlito/Documenti/DrawBot_CNC/fileArduino/build/CMakeFiles/_CMakeLTOTest-CXX/bin/CMakeFiles/foo.dir
+/home/the_lorlito/Documenti/DrawBot_CNC/fileArduino/build/CMakeFiles/_CMakeLTOTest-CXX/bin/CMakeFiles/boo.dir
