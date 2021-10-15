@@ -17,8 +17,15 @@
 #define RAPPORTO 16
 #endif
 
+#ifdef FULLSTEP
+#define SPOSTAMENTO_PASSO  0.01 // se faccio 2mm a giro e servono 200 passi per fare un giro, faccio 0,01mm a passo (2/200)
+#endif
+#ifdef MICRO16STEP
+#define SPOSTAMENTO_PASSO  0.000625 // se faccio 2mm a giro e servono 3200 passi per fare un giro, faccio 0,000625mm a passo 
+#endif
 
 
+#define Tmax 500
 
 #define MAX_MOTORI_STEPPER 2
 #define MAX_BOTTONI 10
@@ -47,5 +54,7 @@
 
 #define UTENSILE1 1
 #define UTENSILE0 0
+
+
 
 #endif

@@ -1,7 +1,5 @@
 #include "DRAWBOTLIB.h"
 
-//#include "Arduino.h"
-
 
 Motore_stepper motore_asse[MAX_MOTORI_STEPPER];
 Finecorsa finecorsa_asse[MAX_MOTORI_STEPPER];
@@ -695,12 +693,18 @@ void CNC::muovi_CNC()
 
 }
 
-bool CNC::ingresso_comando()
+byte CNC::ingresso_comando()
 {
   if (Serial.available() > 0)
-    return 1;
-  else
     return 0;
+  if (Serial1.available() > 0)
+    return 1;
+  if (Serial2.available() > 0)
+    return 2;
+  if (Serial3.available() > 0)
+    return 3;
+    
+  return -1;
 }
 
 
@@ -909,7 +913,7 @@ void CNC::calcola_passi()
 
 }
 
-void CNC::leggi_comando()
+void CNC::leggi_comando(byte seriale)
 {
 
   passi_X_ = 0;
@@ -922,8 +926,15 @@ void CNC::leggi_comando()
   cambia_X_ = 0;
   cambia_Y_ = 0;
   cambia_Z_ = 0;
-
-  ric_string_ = Serial.readStringUntil(';');
+  
+  if(seriale == 0)
+	ric_string_ = Serial.readStringUntil(';');
+  else if(seriale == 1)
+	ric_string_ = Serial1.readStringUntil(';');
+  else if(seriale == 2)
+	ric_string_ = Serial2.readStringUntil(';');
+  else if(seriale == 3)
+	ric_string_ = Serial3.readStringUntil(';');
 
   //Serial.readStringUntil('\n'); //per ripulire il buffer
 

@@ -2,16 +2,6 @@
 #include "Arduino.h"
 
 
-#ifdef FULLSTEP
-#define SPOSTAMENTO_PASSO  0.01 // se faccio 2mm a giro e servono 200 passi per fare un giro, faccio 0,01mm a passo (2/200)
-#endif
-#ifdef MICRO16STEP
-#define SPOSTAMENTO_PASSO  0.000625 // se faccio 2mm a giro e servono 3200 passi per fare un giro, faccio 0,000625mm a passo 
-#endif
-
-
-
-
 CNC DrawBot;
 
 
@@ -50,16 +40,18 @@ const byte *pfinecorsa_Yi = &finecorsa_Yi;
 const byte *pfinecorsa_Yf = &finecorsa_Yf;
 
 
-
-
-
 unsigned long t0 = 0;
-#define Tmax 500
+
 bool stato_motori = 0; //spenti
+byte seriale = -1;
 
 void setup(){
   
   Serial.begin(115200);
+  Serial1.begin(115200);
+  Serial2.begin(115200);
+  Serial3.begin(115200);
+  
   DrawBot.inizializza_motore(X, -SPOSTAMENTO_PASSO, pMotore_X_step, pMotore_X_dir, pMotore_X_en);
   DrawBot.inizializza_motore(Y, SPOSTAMENTO_PASSO, pMotore_Y_step, pMotore_Y_dir, pMotore_Y_en);
   DrawBot.inizializza_motore(Motore_Z);
@@ -77,11 +69,13 @@ void loop(){
     DrawBot.spegni_motore(Y);
     stato_motori = 0;
   }
+  
+  seriale = DrawBot.ingresso_comando();
 
-  if (DrawBot.ingresso_comando()) {
+  if (seriale != -1) {
 
     
-    DrawBot.leggi_comando();
+    DrawBot.leggi_comando(seriale);
 
     if (stato_motori == 0) {
         DrawBot.accendi_motore(X);

@@ -39,7 +39,7 @@ class CNC
     long passi_Y_;
 
     //variabili utili alla lettura del comando in ingresso
-    String ric_string_ = "";
+    String ric_string_ ;
     float coordinate_X_; //X Y Z set_coordinate__
     float coordinate_Y_;
     float coordinate_Z_;
@@ -69,8 +69,8 @@ class CNC
     void attiva_finecorsa(byte num_motore);
     void disattiva_finecorsa(byte num_motore);
 
-    bool ingresso_comando();
-    void leggi_comando();
+    byte ingresso_comando();
+    void leggi_comando(byte seriale);
     void invia_feedback(bool stato); 
 
     int quadrante_cerchio(float Xp, float Yp, float Xc, float Yc);
