@@ -1,0 +1,13 @@
+MOTORE X
+
+$ pin_step = 1
+$ pin_dir  = 2
+$ pin_en   = 3
+& rapporto = 0.001
+
+MOTORE Y
+
+$ pin_step = 4
+$ pin_dir  = 5
+$ pin_en   = 6
+& rapporto = 0.02
