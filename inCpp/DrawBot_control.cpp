@@ -5,5 +5,8 @@ using namespace CNC;
 
 int main(){
  
- DrawBot CNC;
+ DrawBot CNC_LORLO;
+ 
+ CNC_LORLO.leggi_comandi();
+
 }
