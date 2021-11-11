@@ -19,7 +19,7 @@ namespace CNC
 		
 		double posX_;
 		double posY_;
-		bool posZ_;
+		double posZ_;
 		
 		bool noX_; //true = non settato, false = settato
 		bool noY_;
@@ -36,7 +36,7 @@ namespace CNC
 		int get_setF() {return setF_;};
 		int get_setT() {return setT_;};
 		
-		void imposta_configurazione(int setG, int setM, int setF, int setT, double posX, double posY, bool posZ, bool noX, bool noY, bool noZ)
+		void imposta_configurazione(int setG, int setM, int setF, int setT, double posX, double posY, double posZ, bool noX, bool noY, bool noZ)
 		{
 			setG_ = setG;
 			setM_ = setM;
@@ -59,9 +59,9 @@ namespace CNC
 		double Y_;
 		bool Z_;
 		int vel_;
-		bool special_;
+		int special_;
 		
-		void imposta_coordinate_assolute(double X, double Y, bool Z, int vel, bool special)
+		void imposta_coordinate_assolute(double X, double Y, bool Z, int vel, int special)
 		{
 			X_ = X;
 			Y_ = Y;
@@ -74,7 +74,7 @@ namespace CNC
 		double get_Y() {return Y_;};
 		bool get_Z() {return Z_;};
 		int get_vel() {return vel_;};
-		bool get_special() {return special_;};
+		int get_special() {return special_;};
 	
 	};
 	
@@ -95,6 +95,13 @@ namespace CNC
 			comando_speciale_ = comando_speciale;
 		}
 		
+		int32_t get_passiX() {return passiX_;};
+		int32_t get_passiY() {return passiY_;};
+		bool get_passoZ() {return passoZ_;};
+		int get_vel() {return vel_;};
+		int get_special() {return comando_speciale_;};
+	
+		
 		void stampa_ordine() 
 		{
 			cout<<"passiX "<<passiX_<<"  "<<"passiY "<<passiY_<<"  "<<"passoZ "<<passoZ_<<"  "<<"vel "<<vel_<<"  "<<"speciale "<<comando_speciale_<<endl;
@@ -111,7 +118,7 @@ namespace CNC
 		public:
 			Motore_passo() {};
 			void configura_motore(byte pin_step, byte pin_dir, byte pin_en, double spostamento_passo);
-			bool muovi(int32_t passi);
+			bool muovi(int32_t passi, int vel);
 			void spegni();
 			void accendi();
 			
@@ -135,6 +142,7 @@ namespace CNC
 			DrawBot();
 			
 			bool leggi_comandi();
+			bool esegui_comandi();
 			
 			enum Gset : int {
 			incrementali = 91,
@@ -161,13 +169,13 @@ namespace CNC
 			void vettore_da_coordinate_a_ordine(configurazione& conf_partenza, vector<coordinate_assolute>& lista_coordinate, vector<ordine>& lista_ordini);
 			
 			configurazione conf_partenza_;
-			vector<configurazione> conf_elaborate_;
-			vector<coordinate_assolute> lista_coordinate_;
+			
 			vector<ordine> lista_ordini_;
 			
 			int indice_eseg_;
 			
 			int32_t calcola_passi(double preX, double preY, double X, double Y);
+			int F_to_udelay(int F, double spostamento_passo);
 			
 			bool finecorsa_min_X_;
 			bool finecorsa_max_X_;

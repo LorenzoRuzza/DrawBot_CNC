@@ -66,23 +66,39 @@ bool DrawBot::leggi_comandi()
 	string comando{""};
 	int stop_pos = 0;
 	
+	vector<configurazione> conf_elaborate;
+	vector<coordinate_assolute> lista_coordinate;
+	
 	fstream commandFile("comandi.txt"); //da rimpiazzare con variabile globale e scrivere programma che preleva i comandi che vengono scritti sulla variabile globale
 	while (getline (commandFile, linea)) {
 		stop_pos = linea.find(';');
 		comando = linea.substr(0, stop_pos);
 		if (!comando.empty()) {
-			conf_elaborate_.push_back(interpreta_comando(comando));
+			conf_elaborate.push_back(interpreta_comando(comando));
 		}
 
 	}
 	
-	vettore_da_configurazione_a_coordinate(conf_partenza_, conf_elaborate_, lista_coordinate_);
-	vettore_da_coordinate_a_ordine(conf_partenza_, lista_coordinate_, lista_ordini_);
+	vettore_da_configurazione_a_coordinate(conf_partenza_, conf_elaborate, lista_coordinate);
+	//conf_elaborate_.erase(conf_elaborate_.begin(), conf_elaborate_.end());
 	
+	vettore_da_coordinate_a_ordine(conf_partenza_, lista_coordinate, lista_ordini_);
+	//lista_coordinate_.erase(lista_coordinate_.begin(), lista_coordinate_.end());
+	
+	/*
 	for (int i = 0; i < static_cast<int>(lista_ordini_.size()); i++) {
 		lista_ordini_.at(i).stampa_ordine();
 	}
+	*/
 	
+	ofstream com_file;
+  	com_file.open ("com_file.txt", std::ofstream::out | std::ofstream::trunc);
+  	for (int i=0; i < static_cast<int>(lista_coordinate.size()); i++)
+  		com_file <<"X"<<lista_coordinate.at(i).get_X()<<"  Y"<<lista_coordinate.at(i).get_Y()<<"  Z"<<lista_coordinate.at(i).get_Z()<<"  V"<<lista_coordinate.at(i).get_vel()<<"\n";
+  	com_file.close();
+  	
+
+  	
 	return true;
 }
 
@@ -149,7 +165,10 @@ configurazione DrawBot::interpreta_comando(string cmd)
 		noY = true;
 	
 	if (posZ != static_cast<int>(string::npos)) 
-		Z = static_cast<bool>(numero_sottostringa(cmd, posZ));
+		if (numero_sottostringa(cmd, posZ) <= 0)
+			Z = 1;
+		else
+			Z = 0;
 	else 
 		noZ = true;
 	
@@ -174,7 +193,7 @@ void DrawBot::vettore_da_configurazione_a_coordinate(configurazione& conf_parten
 	if (conf_partenza.get_setG() == retta || conf_partenza.get_setG() == orario || conf_partenza.get_setG() == antiorario)
 		G_mov = conf_partenza.get_setG();
 	if (conf_partenza.get_setG() == homing)
-		special = conf_partenza.get_setG();
+		special = homing;
 		
 	
 	for (int i = 0; i < static_cast<int>(conf_elaborate.size()); i++) {
@@ -183,7 +202,9 @@ void DrawBot::vettore_da_configurazione_a_coordinate(configurazione& conf_parten
 		if (conf_elaborate.at(i).get_setG() == retta || conf_elaborate.at(i).get_setG() == orario || conf_elaborate.at(i).get_setG() == antiorario)
 			G_mov = conf_elaborate.at(i).get_setG();
 		if (conf_elaborate.at(i).get_setG() == homing)
-			special = conf_elaborate.at(i).get_setG();
+			special = homing;
+		else 
+			special = -1;
 		if (conf_elaborate.at(i).get_setF() != -1) {
 			vel = conf_elaborate.at(i).get_setF();
 		}
@@ -229,7 +250,7 @@ void DrawBot::vettore_da_coordinate_a_ordine(configurazione& conf_partenza, vect
 	
 	int32_t passiX = 0;
 	int32_t passiY = 0;
-	int vel = conf_partenza.get_setF();
+	int vel = F_to_udelay(conf_partenza.get_setF(), motoreX.get_spostamento_passo());
 	int speciale = -1;
 	
 	ordine p;
@@ -242,13 +263,75 @@ void DrawBot::vettore_da_coordinate_a_ordine(configurazione& conf_partenza, vect
 		passiY = static_cast<int32_t>((Y - Y_pre)/rap_Y);
 		X_pre = X;
 		Y_pre = Y;
-		vel = lista_coordinate.at(i).get_vel();
+		vel = F_to_udelay(lista_coordinate.at(i).get_vel(), motoreX.get_spostamento_passo());
 		speciale = lista_coordinate.at(i).get_special();
 		lista_ordini.push_back(p);
 		lista_ordini.at(i).imposta_ordine(passiX, passiY, passoZ, vel, speciale);
 	}
 	
 }
+
+int DrawBot::F_to_udelay(int F, double spostamento_passo) //F in mm/min
+{	//mm/min * passo/mm = passo/min
+	return ((F / spostamento_passo) / (60000000)) / 2;
+}
+
+bool DrawBot::esegui_comandi() // da aggiungere homing
+{	
+	int32_t passiX;
+	int32_t passiY;
+	int32_t rap = 0;
+	double res = 0;
+	int32_t comp = 0;
+	int32_t cont_comp = 0;
+	
+	int udelay_vel;
+	
+	for (int i = 0; i < static_cast<int>(lista_ordini_.size()); i++) {
+		comp = 0;
+		cont_comp = 0;
+		passiX = lista_ordini_.at(indice_eseg_).get_passiX();
+		passiY = lista_ordini_.at(indice_eseg_).get_passiY();
+		udelay_vel = lista_ordini_.at(indice_eseg_).get_vel();
+		
+		if (passiX == 0 || passiY == 0) {
+			motoreY.muovi(passiY, udelay_vel);
+			motoreX.muovi(passiX, udelay_vel);
+		
+		} else if (passiX >= passiY) {
+			rap = passiX / passiY;
+			res = (static_cast<double>(passiX) / static_cast<double>(passiY)) - static_cast<double>(rap);
+			for (int32_t i = 0; i < passiY; i++) {
+				motoreX.muovi(rap + comp, udelay_vel);
+				motoreY.muovi(1, udelay_vel);
+				if (cont_comp >= 1) {
+					comp = 1;
+					cont_comp = cont_comp - 1;
+				} else {
+					comp = 0;
+					cont_comp = cont_comp + res;
+				}
+			}
+		} else {
+			rap = passiY / passiX;
+			res = (static_cast<double>(passiY) / static_cast<double>(passiX)) - static_cast<double>(rap);
+			for (int32_t i = 0; i < passiX; i++) {
+				motoreY.muovi(rap + comp, udelay_vel);
+				motoreX.muovi(1, udelay_vel);
+				if (cont_comp >= 1) {
+					comp = 1;
+					cont_comp = cont_comp - 1;
+				} else {
+					comp = 0;
+					cont_comp = cont_comp + res;
+				}
+			}
+	}
+		
+	
+}
+}
+
 
 void Motore_passo::stampa_pin()
 {
